@@ -2,6 +2,7 @@ package db;
 
 
 import Domain.Character;
+import Net.ServerWS;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -13,6 +14,7 @@ public class Login  {
     private Session session;
     private Users user;
     private Character character;
+
 
     public Login(String userLogin, String pass) {
 
@@ -113,4 +115,6 @@ public class Login  {
     public void setCharacter(Character character) {
         this.character = character;
     }
+
+
 }

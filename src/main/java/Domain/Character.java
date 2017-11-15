@@ -62,7 +62,9 @@ public class Character {
         enemy.setHP(enemy.getHP()-(this.strength*perReductionPhyDamage));
     }
 
-
+    public void sendMessage(String message) {
+        this.clientSession.getAsyncRemote().sendText(message);
+    }
 
     public UUID getId() {
         return id;

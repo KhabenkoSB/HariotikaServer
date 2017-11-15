@@ -1,11 +1,14 @@
 package Domain;
 
+import com.google.gson.Gson;
 import com.sun.xml.internal.messaging.saaj.util.FinalArrayList;
 
 import java.util.ArrayList;
+import java.util.WeakHashMap;
 
-public class Battle {
-    int number;
+public class Battle extends Thread {
+
+    long number;
     private Character player1;
     private Character player2;
 
@@ -19,12 +22,14 @@ public class Battle {
     private PartOfBody player2Hit;
 
 
-    public Battle(Character player1, Character player2) {
+    public Battle(long number,Character player1, Character player2) {
+        this.number = number;
         this.player1 = player1;
         this.player2 = player2;
     }
 
-    public Battle fight(){
+    public void fight(){
+        Gson gson = new Gson();
         if (!getPlayer1Hit().equals(getPlayer2Def()) && getPlayer1Hit()!= null)
         {
             player1.hit(player2);
@@ -34,10 +39,35 @@ public class Battle {
             player2.hit(player1);
         }
 
-        return this;
+        player1IsReady =false;
+        player2IsReady =false;
+
+        player1.sendMessage(gson.toJson(this));
+        player2.sendMessage(gson.toJson(this));
     }
 
 
+
+    public boolean isRedy(){
+        return player1IsReady && player2IsReady;
+    }
+
+    public boolean isNotFinish(){
+        if (player1.getHP()<=0 || player2.getHP()<=0)
+            return false;
+        else return true;
+    }
+
+    @Override
+    public void run() {
+        while (isNotFinish())
+        {
+            if (isRedy()){
+                fight();
+            }
+        }
+        System.out.println("Бой закончен");
+    }
 
     public boolean isPlayer1IsReady() {
         return player1IsReady;
@@ -103,5 +133,11 @@ public class Battle {
         this.player2Hit = player2Hit;
     }
 
+    public long getNumber() {
+        return number;
+    }
 
+    public void setNumber(long number) {
+        this.number = number;
+    }
 }
