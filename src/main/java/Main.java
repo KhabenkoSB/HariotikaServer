@@ -1,3 +1,5 @@
+import Domain.Arena;
+import Domain.Character;
 import db.HibernateUtil;
 import db.HibernateUtil2;
 import db.Login;
@@ -6,6 +8,29 @@ import org.hibernate.Session;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+
+        Arena arena = new Arena();
+        Character character = new Character("Maka","Maka");
+        character.setLvl(3);
+        arena.addToArena(character);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   /*
+
+
         System.out.println("Maven + Hibernate + PgSQL");
         Session session = HibernateUtil2.getSessionFactory().openSession();
       //  Login login = new Login("Maka","2");

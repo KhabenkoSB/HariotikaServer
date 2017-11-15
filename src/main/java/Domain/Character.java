@@ -54,6 +54,12 @@ public class Character {
     public Character() {
     }
 
+    public void hit(Character enemy){
+        int perReductionPhyDamage = (100-(enemy.getArmor()/enemy.getLvl()))/100;
+        enemy.setHP(enemy.getHP()-(this.strength*perReductionPhyDamage));
+    }
+
+
 
     public UUID getId() {
         return id;
