@@ -1,6 +1,7 @@
 package db;
 
 
+import Domain.Character;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -11,6 +12,7 @@ public class Login  {
 
     private Session session;
     private Users user;
+    private Character character;
 
     public Login(String userLogin, String pass) {
 
@@ -64,6 +66,10 @@ public class Login  {
             System.out.println("++++++++++++++Логин верифицирован++++++++++++++");
             if (user.getPass().toString().equals(pass)) {
                 System.out.println("++++++++++++++Пароль верифицирован++++++++++++++");
+                hql = "from Character WHERE login='"+user.getLogin()+"'";
+                query = session.createQuery(hql);
+                List<Character> characters =  query.list();
+                character=characters.get(0);
                 return true;
             }
             else
@@ -75,9 +81,9 @@ public class Login  {
     }
 
 
-    public void save(){
+    public void save(Object object){
         session.beginTransaction();
-        session.saveOrUpdate(user);
+        session.saveOrUpdate(object);
         session.getTransaction().commit();
     }
 
@@ -86,8 +92,25 @@ public class Login  {
         Query query = session.createQuery(hql);
         user.setLogin("Player"+query.list().size());
         user.setPass("null");
-        save();
+        save(user);
+        createNewChar();
+
+
     }
 
+    public  void createNewChar(){
+        character = new Character(user.getLogin(),user.getLogin());
+        character.setLvl(1);
+        character.setHP(10);
+        character.setStrength(20);
+        save(character);
+    }
 
+    public Character getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(Character character) {
+        this.character = character;
+    }
 }

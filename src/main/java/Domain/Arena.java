@@ -12,7 +12,7 @@ public class Arena {
         this.charQueue = new HashMap<Integer, PriorityQueue<Character>>();
         this.battleList = new HashMap<Integer, Battle>();
 
-        for (int i = 1; i <= 10 ; i++) {
+        for (int i = 1; i <= 20 ; i++) {
             this.charQueue.put(i, new PriorityQueue<Character>());
         }
     }
@@ -30,7 +30,12 @@ public class Arena {
         }
         System.out.println(charQueue.get(3).poll().getName());
         System.out.println(charQueue.get(3).size());
+    }
+
+    public void createBattle() {
+
 
     }
+
 
 }

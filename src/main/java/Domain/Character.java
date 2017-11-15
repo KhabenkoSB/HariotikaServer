@@ -6,6 +6,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.query.Query;
 
 import javax.persistence.*;
+import javax.websocket.Session;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +14,8 @@ import java.util.UUID;
 public class Character {
     @Transient
     private Users user;
+    @Transient
+    private Session clientSession;
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -171,5 +174,21 @@ public class Character {
 
     public void setExperience(int experience) {
         this.experience = experience;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public Session getClientSession() {
+        return clientSession;
+    }
+
+    public void setClientSession(Session clientSession) {
+        this.clientSession = clientSession;
     }
 }

@@ -17,6 +17,7 @@ import javax.websocket.server.ServerEndpoint;
 public class ServerWS   {
 
     private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
+    Gson gson = new Gson();
     Session session;
     Login login;
 
@@ -56,35 +57,35 @@ public class ServerWS   {
     }
 
 
-     public  void parsingMessage(String message)
-     {
+     public  void parsingMessage(String message) {
          String[] comand = message.split("#");
          System.out.println(message);
-
-         if (comand[0].equals("login"))
-         {
-             System.out.println("Сокеты: "+peers.size());
-           login = new Login(comand[1],comand[2]);
-           if (!comand[1].equals("null")){
-             if (login.loginIsPresent() && login.checkPass(comand[2]))
-                   sendMessage("login#1");
-               else
-                   sendMessage("login#2");
-           }
-           else if (comand[1].equals("null")) {
-               login.createNewUser();
-               Character character =  new Character("Maka", login.getUser().getLogin());
-               System.out.println(character.getLogin());
-               System.out.println(character.getName());
-               login.getSession().beginTransaction();
-               login.getSession().saveOrUpdate(character);
-               login.getSession().getTransaction().commit();
-               sendMessage("login#"+login.getUser().getLogin());
-               Gson gson = new Gson();
-               sendMessage(gson.toJson(character));
-
-           }
+         if (comand[0].equals("login")) {
+             verifyLogin(comand);
          }
+     }
+
+
+       public void verifyLogin(String[] comand){
+
+               System.out.println("Сокеты: "+peers.size());
+               login = new Login(comand[1],comand[2]);
+               if (!comand[1].equals("null")){
+                   if (login.loginIsPresent() && login.checkPass(comand[2]))
+                       sendMessage("login#1#"+gson.toJson(login.getCharacter())); //Код ошибки: 1 - отправка данных
+                   else
+                       sendMessage("login#2"); //Код ошибки 2 - Неверный логин и пароль
+               }
+               else if (comand[1].equals("null")) {
+                   login.createNewUser();
+                   sendMessage("login#"+login.getUser().getLogin()+"#"+gson.toJson(login.getCharacter()));
+
+               }
+
+
+
+
+
        }
 
 
