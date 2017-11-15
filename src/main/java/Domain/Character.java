@@ -41,7 +41,9 @@ public class Character {
     private int HP;
     @Column(name = "login")
     private String login;
+    @Column(name = "lvl")
     private int lvl;
+    @Column(name = "experience")
     private int experience;
 
     public Character(String name, String login) {
@@ -149,6 +151,19 @@ public class Character {
         this.login = login;
     }
 
+    public int getLvl() {
+        return lvl;
+    }
 
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
+    }
 
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
 }
