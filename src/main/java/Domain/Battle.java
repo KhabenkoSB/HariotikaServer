@@ -33,17 +33,19 @@ public class Battle extends Thread {
         if (!getPlayer1Hit().equals(getPlayer2Def()) && getPlayer1Hit()!= null)
         {
             player1.hit(player2);
+            System.out.println("HP Игрока 1 "+player1.getHP());
         }
         if (!getPlayer2Hit().equals(getPlayer1Def())&& getPlayer2Hit()!= null)
         {
             player2.hit(player1);
+            System.out.println("HP Игрока 2 "+player2.getHP());
         }
 
         player1IsReady =false;
         player2IsReady =false;
 
-        player1.sendMessage(gson.toJson(this));
-        player2.sendMessage(gson.toJson(this));
+//        player1.sendMessage(gson.toJson(this));
+ //       player2.sendMessage(gson.toJson(this));
     }
 
 
@@ -52,21 +54,32 @@ public class Battle extends Thread {
         return player1IsReady && player2IsReady;
     }
 
-    public boolean isNotFinish(){
+    public boolean isFinish(){
         if (player1.getHP()<=0 || player2.getHP()<=0)
-            return false;
-        else return true;
+            return true;
+        else return false;
     }
 
     @Override
     public void run() {
-        while (isNotFinish())
+        System.out.println("Бой начался");
+        while (true)
         {
             if (isRedy()){
+                if (isFinish())
+                    break;
                 fight();
             }
+            setPlayer1IsReady(true);
+            setPlayer2IsReady(true);
+            player1Def = PartOfBody.HEAD;
+            player2Def= PartOfBody.HEAD;
+
+            player1Hit= PartOfBody.BODY;
+            player2Hit= PartOfBody.BODY;
         }
         System.out.println("Бой закончен");
+
     }
 
     public boolean isPlayer1IsReady() {

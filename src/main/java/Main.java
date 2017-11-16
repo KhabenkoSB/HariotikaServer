@@ -11,11 +11,12 @@ public class Main {
 
         Arena arena = new Arena();
         Character character = new Character("Maka","Maka");
-        character.setLvl(3);
+        character.setLvl(1);
+        arena.addToArena(character);
+        character.setName("Maka2");
         arena.addToArena(character);
 
-
-
+        System.out.println(arena.getCharQueue().get(1));
 
 
 

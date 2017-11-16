@@ -20,6 +20,7 @@ public class ServerWS   {
 
     private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
     private static Arena arena = new Arena();
+
     Gson gson = new Gson();
     Session session;
     Login login;
@@ -70,6 +71,10 @@ public class ServerWS   {
          {
              updateBattle(comand);
          }
+         if (comand[0].equals("RegToBattle"))
+         {
+             regToBattle(comand);
+         }
      }
 
 
@@ -89,10 +94,32 @@ public class ServerWS   {
                }
        }
        public  void updateBattle(String[] comand ){
-           String number = comand[1];
+           Long number = Long.valueOf(comand[1]);
            String name = comand[2];
            PartOfBody wereHit = PartOfBody.valueOf(comand[3]);
            PartOfBody whatDef = PartOfBody.valueOf(comand[4]);
+           if (arena.getBattleList().get(Long.valueOf(name)).getPlayer1().getName().equals(name)){
+               //Мыпервый игрок
+               arena.getBattleList().get(number).setPlayer1Hit(wereHit);
+               arena.getBattleList().get(number).setPlayer1Def(whatDef);
+               arena.getBattleList().get(number).setPlayer1IsReady(true);
+           }
+           else {
+               arena.getBattleList().get(number).setPlayer2Hit(wereHit);
+               arena.getBattleList().get(number).setPlayer2Def(whatDef);
+               arena.getBattleList().get(number).setPlayer2IsReady(true);
+
+           }
+
+       }
+
+       public void regToBattle(String[] comand){
+           System.out.println(arena.getCharQueue());
+           login.getCharacter().setLvl(1);
+           arena.addToArena(login.getCharacter());
+           System.out.println("Зреган на батл");
+           System.out.println(arena.getCharQueue().get(1).size());
+
 
        }
 

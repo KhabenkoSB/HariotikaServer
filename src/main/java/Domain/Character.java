@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "character")
-public class Character {
+public class Character implements Comparable {
     @Transient
     private Users user;
     @Transient
@@ -40,7 +40,7 @@ public class Character {
     private int armor;
     @Column(name = "maxHP")
     private int maxHP;
-    @Transient
+    @Column(name = "HP")
     private int HP;
     @Column(name = "login")
     private String login;
@@ -58,12 +58,16 @@ public class Character {
     }
 
     public void hit(Character enemy){
-        int perReductionPhyDamage = (100-(enemy.getArmor()/enemy.getLvl()))/100;
-        enemy.setHP(enemy.getHP()-(this.strength*perReductionPhyDamage));
+        System.out.println("Удар "+getName());
+       // int perReductionPhyDamage = (100-(enemy.getArmor()/enemy.getLvl()))/100;
+     //   System.out.println(perReductionPhyDamage);
+      //  enemy.setHP(enemy.getHP()-(this.strength*perReductionPhyDamage));
+        enemy.setHP(enemy.getHP()-this.strength);
     }
 
     public void sendMessage(String message) {
-        this.clientSession.getAsyncRemote().sendText(message);
+        System.out.println(message);
+       // this.clientSession.getAsyncRemote().sendText(message);
     }
 
     public UUID getId() {
@@ -192,5 +196,9 @@ public class Character {
 
     public void setClientSession(Session clientSession) {
         this.clientSession = clientSession;
+    }
+
+    public int compareTo(Object o) {
+        return 0;
     }
 }

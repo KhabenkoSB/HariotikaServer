@@ -1,6 +1,7 @@
 package Net;
 
 
+import Domain.Arena;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
