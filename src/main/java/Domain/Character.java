@@ -1,5 +1,6 @@
 package Domain;
 
+import com.google.gson.annotations.Expose;
 import db.Users;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -7,15 +8,18 @@ import org.hibernate.query.Query;
 
 import javax.persistence.*;
 import javax.websocket.Session;
+import java.io.Serializable;
 import java.util.UUID;
+
+import static Net.ServerWS.getSessionMap;
 
 @Entity
 @Table(name = "character")
-public class Character implements Comparable {
+public class Character implements Comparable, Serializable {
     @Transient
-    private Users user;
+    private  Users user;
     @Transient
-    private Session clientSession;
+    private boolean inBattle;
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -66,7 +70,8 @@ public class Character implements Comparable {
     }
 
     public void sendMessage(String message) {
-        System.out.println(message);
+
+        getSessionMap().get(this.getName()).getAsyncRemote().sendText(message);
        // this.clientSession.getAsyncRemote().sendText(message);
     }
 
@@ -190,13 +195,6 @@ public class Character implements Comparable {
         this.user = user;
     }
 
-    public Session getClientSession() {
-        return clientSession;
-    }
-
-    public void setClientSession(Session clientSession) {
-        this.clientSession = clientSession;
-    }
 
     public int compareTo(Object o) {
         return 0;

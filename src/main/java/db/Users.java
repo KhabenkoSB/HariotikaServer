@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.websocket.Session;
 import java.io.Serializable;
 import java.util.UUID;
 

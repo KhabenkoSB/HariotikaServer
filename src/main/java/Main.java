@@ -1,17 +1,27 @@
 import Domain.Arena;
+import Domain.Battle;
 import Domain.Character;
+import Domain.PartOfBody;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import db.HibernateUtil;
 import db.HibernateUtil2;
 import db.Login;
 import db.Users;
 import org.hibernate.Session;
 
+import javax.ws.rs.HEAD;
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Arena arena = new Arena();
+       Arena arena = new Arena();
         Character character = new Character("Maka","Maka");
-        character.setLvl(1);
+        Character character2 = new Character("Maka","Maka");
+        Character character3 = new Character("Maka","Maka");
+        Character character4 = new Character("Maka","Maka");
+
+     character.setLvl(1);
         arena.addToArena(character);
         character.setName("Maka2");
         arena.addToArena(character);
@@ -19,13 +29,22 @@ public class Main {
         System.out.println(arena.getCharQueue().get(1));
 
 
+        Battle battle = new Battle(1,character,character);
+        Gson gson = new Gson();
+        Character character1 = new Character();
+        character.setLvl(1);
+        character.setHP(3);
+        character.setStrength(1);
+        character.setArmor(1);
 
 
+         gson = new Gson();
 
+        System.out.println(character.getName());
+        System.out.println(gson.toJson(battle.getPlayer1()));
+        System.out.println(gson.toJson(battle.getPlayer2()));
 
-
-
-
+        System.out.println(gson.toJson(battle));
 
 
 

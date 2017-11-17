@@ -5,16 +5,18 @@ import com.google.gson.Gson;
 import Domain.Character;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.*;
 
 
 public class Arena extends Thread {
     HashMap<Integer,PriorityQueue<Domain.Character>> charQueue;
     HashMap<Long,Battle> battleList;
-    Gson gson;
+    Gson gson ;
 
 
     public Arena() {
+        gson = new Gson();
         this.charQueue = new HashMap<Integer, PriorityQueue<Character>>();
         this.battleList = new HashMap<Long, Battle>();
         this.gson = new Gson();
@@ -48,21 +50,38 @@ public class Arena extends Thread {
 
 
     public void createBattle() {
-        Gson gson = new Gson();
-           if (charQueue.get(1).size()>1){
+
+
+        for (HashMap.Entry<Integer, PriorityQueue<Character>>  pair: charQueue.entrySet()) {
+
+           if (pair.getValue().size()>1){
                System.out.println("----------Создан БАТЛ-------------");
                long number = new Date().getTime();
                Character player1 = charQueue.get(1).poll();
                Character player2 = charQueue.get(1).poll();
-               Battle battle = new Battle(number,player1,player2);
+               final Battle battle = new Battle(number,player1,player2);
                battleList.put(number, battle);
-               battle.start();
-             //  String string =  gson.toJson(battle);
-            //   System.out.println(string);
-              //   player2.sendMessage(gson.toJson(battle));
-         //    player2.sendMessage(gson.toJson(battle));
+
+               Thread thread = new Thread(){
+                   public void run(){
+                       System.out.println("Thread Running " + battle.getNumber());
+                       battle.startfight();
+                   }
+               };
+
+               thread.start();
+
+               player1.sendMessage(gson.toJson(battle));
+               player2.sendMessage(gson.toJson(battle));
            }
+
+            }
+
     }
+
+
+
+
 
 
     public HashMap<Integer, PriorityQueue<Character>> getCharQueue() {

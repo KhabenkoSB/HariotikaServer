@@ -8,9 +8,7 @@ import db.Login;
 import db.Users;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -18,6 +16,8 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/")
 public class ServerWS   {
 
+    private static Map<String,Session> sessionMap = Collections.synchronizedMap(new HashMap<String, Session>());
+    private static Map<String,Character> characterMap = Collections.synchronizedMap(new HashMap<String, Character>());
     private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
     private static Arena arena = new Arena();
 
@@ -73,6 +73,7 @@ public class ServerWS   {
          }
          if (comand[0].equals("RegToBattle"))
          {
+             // 0 - команда, 1- номер боя 2- имя персонажа,3 куда бьет, 4 - что защищяет
              regToBattle(comand);
          }
      }
@@ -82,13 +83,17 @@ public class ServerWS   {
                System.out.println("Сокеты: "+peers.size());
                login = new Login(comand[1],comand[2]);
                if (!comand[1].equals("null")){
-                   if (login.loginIsPresent() && login.checkPass(comand[2]))
-                       sendMessage("login#1#"+gson.toJson(login.getCharacter())); //Код ошибки: 1 - отправка данных
+                   if (login.loginIsPresent() && login.checkPass(comand[2])) {
+                       sessionMap.put(login.getCharacter().getName(), session);
+                       sendMessage("login#1#" + gson.toJson(login.getCharacter())); //Код ошибки: 1 - отправка данных
+
+                   }
                    else
-                       sendMessage("login#2"); //Код ошибки 2 - Неверный логин и пароль
+                       sendMessage("login#2"); //Код ошибки 2 - Неверный логин и парольм
                }
                else if (comand[1].equals("null")) {
                    login.createNewUser();
+                   sessionMap.put(login.getCharacter().getName(), session);
                    sendMessage("login#"+login.getUser().getLogin()+"#"+gson.toJson(login.getCharacter()));
 
                }
@@ -118,11 +123,16 @@ public class ServerWS   {
            login.getCharacter().setLvl(1);
            arena.addToArena(login.getCharacter());
            System.out.println("Зреган на батл");
-           System.out.println(arena.getCharQueue().get(1).size());
-
+           sendMessage("RegisteredInBattle#true");
 
        }
 
 
+    public static Map<String, Session> getSessionMap() {
+        return sessionMap;
+    }
 
+    public static void setSessionMap(Map<String, Session> sessionMap) {
+        ServerWS.sessionMap = sessionMap;
+    }
 }

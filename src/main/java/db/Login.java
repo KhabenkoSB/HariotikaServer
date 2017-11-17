@@ -107,6 +107,7 @@ public class Login  {
         character.setStrength(1);
         character.setArmor(1);
         save(character);
+
     }
 
     public Character getCharacter() {

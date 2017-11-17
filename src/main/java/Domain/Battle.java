@@ -1,12 +1,9 @@
 package Domain;
 
-import com.google.gson.Gson;
-import com.sun.xml.internal.messaging.saaj.util.FinalArrayList;
 
-import java.util.ArrayList;
-import java.util.WeakHashMap;
+import java.io.Serializable;
 
-public class Battle extends Thread {
+public class Battle {
 
     long number;
     private Character player1;
@@ -28,8 +25,8 @@ public class Battle extends Thread {
         this.player2 = player2;
     }
 
+
     public void fight(){
-        Gson gson = new Gson();
         if (!getPlayer1Hit().equals(getPlayer2Def()) && getPlayer1Hit()!= null)
         {
             player1.hit(player2);
@@ -60,8 +57,8 @@ public class Battle extends Thread {
         else return false;
     }
 
-    @Override
-    public void run() {
+
+    public void startfight() {
         System.out.println("Бой начался");
         while (true)
         {
