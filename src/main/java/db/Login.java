@@ -54,7 +54,6 @@ public class Login  {
         System.out.println(user.getLogin());
         String hql = "from Users where login = '"+user.getLogin()+"'";
         Query query = session.createQuery(hql);
-        System.out.println(query.list().size());
         boolean isLogin = query.list().isEmpty() ;
              return !isLogin;
     }

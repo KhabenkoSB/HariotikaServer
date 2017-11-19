@@ -71,7 +71,16 @@ public class Character implements Comparable, Serializable {
 
     public void sendMessage(String message) {
 
-        getSessionMap().get(this.getName()).getAsyncRemote().sendText(message);
+        try {
+            getSessionMap().get(this.getName()).getAsyncRemote().sendText(message);
+        }
+        catch (Exception e)
+        {
+            if (getSessionMap().get(this.getName()).isOpen())
+            sendMessage(message);
+           else    e.printStackTrace();
+        }
+
        // this.clientSession.getAsyncRemote().sendText(message);
     }
 

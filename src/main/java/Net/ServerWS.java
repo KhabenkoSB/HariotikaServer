@@ -2,6 +2,7 @@ package Net;
 
 import Domain.Arena;
 import Domain.Character;
+import Domain.GlobalUpdate;
 import Domain.PartOfBody;
 import com.google.gson.Gson;
 import db.Login;
@@ -18,7 +19,7 @@ public class ServerWS   {
 
     private static Map<String,Session> sessionMap = Collections.synchronizedMap(new HashMap<String, Session>());
     private static Map<String,Character> characterMap = Collections.synchronizedMap(new HashMap<String, Character>());
-    private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
+    private static GlobalUpdate globalUpdate = new GlobalUpdate();
     private static Arena arena = new Arena();
 
     Gson gson = new Gson();
@@ -29,7 +30,6 @@ public class ServerWS   {
     @OnOpen
     public void onOpen(Session peer) throws IOException, InterruptedException {
         System.out.println("Open Connection ..." + peer);
-        peers.add(peer);
         session = peer;
     }
 
@@ -39,10 +39,9 @@ public class ServerWS   {
     }
 
     @OnMessage
-    public String onMessage(String message) throws IOException, InterruptedException {
+    public void onMessage(String message) throws IOException, InterruptedException {
        parsingMessage(message);
 
-        return null;
     }
 
     @OnError
@@ -80,12 +79,22 @@ public class ServerWS   {
 
 
        public void verifyLogin(String[] comand){
-               System.out.println("Сокеты: "+peers.size());
+             //  System.out.println("Сокеты: "+peers.size());
                login = new Login(comand[1],comand[2]);
                if (!comand[1].equals("null")){
                    if (login.loginIsPresent() && login.checkPass(comand[2])) {
                        sessionMap.put(login.getCharacter().getName(), session);
-                       sendMessage("login#1#" + gson.toJson(login.getCharacter())); //Код ошибки: 1 - отправка данных
+
+                       if (!characterMap.containsKey(login.getCharacter().getName())) {
+                           characterMap.put(login.getCharacter().getName(), login.getCharacter());
+                           System.out.println("обавили в мапучаров");
+                           System.out.println(gson.toJson(characterMap.get(login.getCharacter().getName())));
+
+                       }
+
+                     //  sendMessage("login#1#" + gson.toJson(login.getCharacter())); //Код ошибки: 1 - отправка данных
+                       System.out.println(characterMap.get(login.getCharacter()));
+                       sendMessage("login#1#" + gson.toJson(characterMap.get(login.getCharacter().getName())));
 
                    }
                    else
@@ -94,6 +103,8 @@ public class ServerWS   {
                else if (comand[1].equals("null")) {
                    login.createNewUser();
                    sessionMap.put(login.getCharacter().getName(), session);
+                   if (!characterMap.containsKey(login.getCharacter().getName()))
+                   characterMap.put(login.getCharacter().getName(),login.getCharacter());
                    sendMessage("login#"+login.getUser().getLogin()+"#"+gson.toJson(login.getCharacter()));
 
                }
@@ -103,6 +114,7 @@ public class ServerWS   {
            String name = comand[2];
            PartOfBody wereHit = PartOfBody.valueOf(comand[3]);
            PartOfBody whatDef = PartOfBody.valueOf(comand[4]);
+   //        if (arena.getBattleList().containsKey())
            if (arena.getBattleList().get(Long.valueOf(name)).getPlayer1().getName().equals(name)){
                //Мыпервый игрок
                arena.getBattleList().get(number).setPlayer1Hit(wereHit);
@@ -119,14 +131,28 @@ public class ServerWS   {
        }
 
        public void regToBattle(String[] comand){
-           System.out.println(arena.getCharQueue());
-           login.getCharacter().setLvl(1);
+          // login.getCharacter().setLvl(1);
            arena.addToArena(login.getCharacter());
            System.out.println("Зреган на батл");
            sendMessage("RegisteredInBattle#true");
 
        }
 
+    public static GlobalUpdate getGlobalUpdate() {
+        return globalUpdate;
+    }
+
+    public static void setGlobalUpdate(GlobalUpdate globalUpdate) {
+        ServerWS.globalUpdate = globalUpdate;
+    }
+
+    public static Map<String, Character> getCharacterMap() {
+        return characterMap;
+    }
+
+    public static void setCharacterMap(Map<String, Character> characterMap) {
+        ServerWS.characterMap = characterMap;
+    }
 
     public static Map<String, Session> getSessionMap() {
         return sessionMap;
@@ -134,5 +160,9 @@ public class ServerWS   {
 
     public static void setSessionMap(Map<String, Session> sessionMap) {
         ServerWS.sessionMap = sessionMap;
+    }
+
+    public ServerWS getSoket(){
+           return this;
     }
 }

@@ -8,6 +8,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.*;
 
+import static Net.ServerWS.getCharacterMap;
+
 
 public class Arena extends Thread {
     HashMap<Integer,PriorityQueue<Domain.Character>> charQueue;
@@ -32,7 +34,8 @@ public class Arena extends Thread {
 
         for (HashMap.Entry<Integer, PriorityQueue<Character>>  pair: charQueue.entrySet()) {
             if(pair.getKey() == character.getLvl()){
-                pair.getValue().offer(character);
+                pair.getValue().offer(getCharacterMap().get(character.getName()));
+
             }
           //  System.out.println(pair);
         }
@@ -71,8 +74,8 @@ public class Arena extends Thread {
 
                thread.start();
 
-               player1.sendMessage(gson.toJson(battle));
-               player2.sendMessage(gson.toJson(battle));
+               player1.sendMessage("Battle#"+gson.toJson(battle));
+               player2.sendMessage("Battle#"+gson.toJson(battle));
            }
 
             }
