@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class Battle {
 
     long number;
+    boolean finished = false;
+    String log;
     private Character player1;
     private Character player2;
 
@@ -45,7 +47,9 @@ public class Battle {
         }
 
         Battle battle =this;
-        System.out.println(gson.toJson(battle));
+        if (isFinish())
+            finished =true;
+
         player1.sendMessage("Battle#"+gson.toJson(battle));
         player2.sendMessage("Battle#"+gson.toJson(battle));
 
@@ -88,12 +92,13 @@ public class Battle {
         //    setPlayer2IsReady(true);
 
         }
+
         player1.setInBattle(false);
         player2.setInBattle(false);
         System.out.println(player1.isInBattle());
         System.out.println(player2.isInBattle());
         System.out.println("Бой закончен");
-
+        finished =true;
 
 
     }
@@ -169,4 +174,5 @@ public class Battle {
     public void setNumber(long number) {
         this.number = number;
     }
+
 }
