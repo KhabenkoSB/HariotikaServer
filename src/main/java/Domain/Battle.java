@@ -38,11 +38,13 @@ public class Battle {
         if (!getPlayer1Hit().equals(getPlayer2Def()) && getPlayer1Hit()!= null)
         {
             player1.hit(player2);
+            log+=player1.getName()+" hitting "+player2.getName()+" to "+ player1Hit;
             System.out.println("HP Игрока 1 "+player1.getHP());
         }
         if (!getPlayer2Hit().equals(getPlayer1Def())&& getPlayer2Hit()!= null)
         {
             player2.hit(player1);
+            log+=player2.getName()+" hitting "+player1.getName()+" to "+ player2Hit;
             System.out.println("HP Игрока 2 "+player2.getHP());
         }
 
