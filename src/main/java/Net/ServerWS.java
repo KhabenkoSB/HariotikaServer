@@ -114,19 +114,19 @@ public class ServerWS   {
            String name = comand[2];
            PartOfBody wereHit = PartOfBody.valueOf(comand[3]);
            PartOfBody whatDef = PartOfBody.valueOf(comand[4]);
-   //        if (arena.getBattleList().containsKey())
-           if (arena.getBattleList().get(Long.valueOf(name)).getPlayer1().getName().equals(name)){
+
+           if (arena.getBattleList().get(Long.valueOf(number)).getPlayer1().getName().equals(name)){
                //Мыпервый игрок
                arena.getBattleList().get(number).setPlayer1Hit(wereHit);
                arena.getBattleList().get(number).setPlayer1Def(whatDef);
                arena.getBattleList().get(number).setPlayer1IsReady(true);
+
            }
-           else {
+           else if (arena.getBattleList().get(Long.valueOf(number)).getPlayer2().getName().equals(name)) {
                arena.getBattleList().get(number).setPlayer2Hit(wereHit);
                arena.getBattleList().get(number).setPlayer2Def(whatDef);
                arena.getBattleList().get(number).setPlayer2IsReady(true);
-
-           }
+              }
 
        }
 

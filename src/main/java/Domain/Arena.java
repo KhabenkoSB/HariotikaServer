@@ -63,12 +63,16 @@ public class Arena extends Thread {
                Character player1 = charQueue.get(1).poll();
                Character player2 = charQueue.get(1).poll();
                final Battle battle = new Battle(number,player1,player2);
+               player1.setInBattle(true);
+               player2.setInBattle(true);
                battleList.put(number, battle);
 
                Thread thread = new Thread(){
                    public void run(){
                        System.out.println("Thread Running " + battle.getNumber());
                        battle.startfight();
+                       System.out.println("Thread Stop " + battle.getNumber());
+
                    }
                };
 

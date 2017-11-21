@@ -76,9 +76,12 @@ public class Character implements Comparable, Serializable {
         }
         catch (Exception e)
         {
-            if (getSessionMap().get(this.getName()).isOpen())
+            if (getSessionMap().get(this.getName()).isOpen() ){
+                System.out.println("Ошибка");
             sendMessage(message);
-           else    e.printStackTrace();
+        }
+            else
+               e.printStackTrace();
         }
 
        // this.clientSession.getAsyncRemote().sendText(message);
@@ -204,6 +207,13 @@ public class Character implements Comparable, Serializable {
         this.user = user;
     }
 
+    public boolean isInBattle() {
+        return inBattle;
+    }
+
+    public void setInBattle(boolean inBattle) {
+        this.inBattle = inBattle;
+    }
 
     public int compareTo(Object o) {
         return 0;

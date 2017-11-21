@@ -22,9 +22,9 @@ public class Main {
         Character character4 = new Character("Maka","Maka");
 
      character.setLvl(1);
-        arena.addToArena(character);
+     //   arena.addToArena(character);
         character.setName("Maka2");
-        arena.addToArena(character);
+    //    arena.addToArena(character);
 
         System.out.println(arena.getCharQueue().get(1));
 
@@ -45,7 +45,7 @@ public class Main {
         System.out.println(gson.toJson(battle.getPlayer2()));
 
         System.out.println(gson.toJson(battle));
-
+        System.out.println(true&&true);
 
 
    /*

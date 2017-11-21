@@ -3,5 +3,6 @@ package Domain;
 public enum PartOfBody {
     HEAD,
     BODY,
-    LEGS
+    LEGS,
+    BELLY
 }

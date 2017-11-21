@@ -1,6 +1,8 @@
 package Domain;
 
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 public class Battle {
@@ -9,8 +11,8 @@ public class Battle {
     private Character player1;
     private Character player2;
 
-    private boolean player1IsReady = false;
-    private boolean player2IsReady = false;
+    private boolean player1IsReady;
+    private boolean player2IsReady;
 
     private PartOfBody player1Def;
     private PartOfBody player2Def;
@@ -23,10 +25,14 @@ public class Battle {
         this.number = number;
         this.player1 = player1;
         this.player2 = player2;
+        this.player1IsReady = false;
+        this.player2IsReady =false;
     }
 
 
     public void fight(){
+        Gson gson = new Gson();
+        System.out.println("Файт");
         if (!getPlayer1Hit().equals(getPlayer2Def()) && getPlayer1Hit()!= null)
         {
             player1.hit(player2);
@@ -38,17 +44,20 @@ public class Battle {
             System.out.println("HP Игрока 2 "+player2.getHP());
         }
 
+        Battle battle =this;
+        System.out.println(gson.toJson(battle));
+        player1.sendMessage("Battle#"+gson.toJson(battle));
+        player2.sendMessage("Battle#"+gson.toJson(battle));
+
         player1IsReady =false;
         player2IsReady =false;
 
-//        player1.sendMessage(gson.toJson(this));
- //       player2.sendMessage(gson.toJson(this));
     }
 
 
 
     public boolean isRedy(){
-        return player1IsReady && player2IsReady;
+          return this.player1IsReady && this.player2IsReady;
     }
 
     public boolean isFinish(){
@@ -60,22 +69,32 @@ public class Battle {
 
     public void startfight() {
         System.out.println("Бой начался");
-        while (true)
+        while (!isFinish())
         {
-            if (isRedy()){
-                if (isFinish())
-                    break;
-                fight();
+            try {
+                Thread.sleep(1000);
+                System.out.print("");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            setPlayer1IsReady(true);
-            setPlayer2IsReady(true);
-            player1Def = PartOfBody.HEAD;
-            player2Def= PartOfBody.HEAD;
 
-            player1Hit= PartOfBody.BODY;
-            player2Hit= PartOfBody.BODY;
+            if (isRedy()){
+                fight();
+
+               if (isFinish())
+                    break;
+            }
+         //   setPlayer1IsReady(true);
+        //    setPlayer2IsReady(true);
+
         }
+        player1.setInBattle(false);
+        player2.setInBattle(false);
+        System.out.println(player1.isInBattle());
+        System.out.println(player2.isInBattle());
         System.out.println("Бой закончен");
+
+
 
     }
 

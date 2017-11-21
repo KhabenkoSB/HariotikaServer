@@ -24,11 +24,12 @@ public class GlobalUpdate extends Thread {
          }
 
          for (HashMap.Entry<String, Character> pair : ServerWS.getCharacterMap().entrySet()) {
+             character = ServerWS.getCharacterMap().get(pair.getKey() );
+             if (character.getHP()< character.getMaxHP() && !character.isInBattle())
+             character.setHP(character.getHP() + 1);
+             ServerWS.getCharacterMap().get(character.getName()).setHP(character.getHP());
              if (ServerWS.getSessionMap().get(pair.getKey()).isOpen()) {
                  // Проверяем, конекшен
-                 character = ServerWS.getCharacterMap().get(pair.getKey());
-                 character.setHP(character.getHP() + 1);
-                 ServerWS.getCharacterMap().get(character.getName()).setHP(character.getHP());
                  ServerWS.getSessionMap().get(character.getName()).getAsyncRemote().sendText("login#1#" + gson.toJson(ServerWS.getCharacterMap().get(character.getName())));
 
              } else {
