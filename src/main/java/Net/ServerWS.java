@@ -75,6 +75,10 @@ public class ServerWS   {
              // 0 - команда, 1- номер боя 2- имя персонажа,3 куда бьет, 4 - что защищяет
              regToBattle(comand);
          }
+         if (comand[0].equals("CancelRegBattle"))
+         {
+          cancelRegBattle(comand);
+         }
      }
 
 
@@ -131,12 +135,19 @@ public class ServerWS   {
        }
 
        public void regToBattle(String[] comand){
-          // login.getCharacter().setLvl(1);
            arena.addToArena(login.getCharacter());
-           System.out.println("Зреган на батл");
+           System.out.println("Зареган на батл");
            sendMessage("RegisteredInBattle#true");
 
        }
+
+    public void cancelRegBattle(String[] comand){
+        arena.cancelRegBattle(login.getCharacter());
+        System.out.println("Рег на батл отменен");
+        sendMessage("RegisteredInBattle#false");
+
+    }
+
 
     public static GlobalUpdate getGlobalUpdate() {
         return globalUpdate;

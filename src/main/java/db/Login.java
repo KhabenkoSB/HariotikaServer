@@ -102,7 +102,7 @@ public class Login  {
     public  void createNewChar(){
         character = new Character(user.getLogin(),user.getLogin());
         character.setLvl(1);
-        character.setHP(20);
+        character.setHP(10);
         character.setMaxHP(20);
         character.setStrength(5);
         character.setArmor(1);

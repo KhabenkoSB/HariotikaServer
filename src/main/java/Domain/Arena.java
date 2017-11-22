@@ -14,11 +14,14 @@ import static Net.ServerWS.getCharacterMap;
 public class Arena extends Thread {
     HashMap<Integer,PriorityQueue<Domain.Character>> charQueue;
     HashMap<Long,Battle> battleList;
+    HashSet<String> battleOFF;
+
     Gson gson ;
 
 
     public Arena() {
         gson = new Gson();
+        this.battleOFF = new HashSet<String>();
         this.charQueue = new HashMap<Integer, PriorityQueue<Character>>();
         this.battleList = new HashMap<Long, Battle>();
         this.gson = new Gson();
@@ -35,12 +38,16 @@ public class Arena extends Thread {
         for (HashMap.Entry<Integer, PriorityQueue<Character>>  pair: charQueue.entrySet()) {
             if(pair.getKey() == character.getLvl()){
                 pair.getValue().offer(getCharacterMap().get(character.getName()));
-
             }
           //  System.out.println(pair);
         }
 
     }
+
+    public void cancelRegBattle(Character character){
+           charQueue.get(character.getLvl()).remove(character);
+        }
+
 
 
     @Override
@@ -57,11 +64,15 @@ public class Arena extends Thread {
 
         for (HashMap.Entry<Integer, PriorityQueue<Character>>  pair: charQueue.entrySet()) {
 
-           if (pair.getValue().size()>1){
+           if (pair.getValue().size()>1 && pair.getValue().size()%2==0 ){
+
                System.out.println("----------Создан БАТЛ-------------");
                long number = new Date().getTime();
+
                Character player1 = charQueue.get(1).poll();
                Character player2 = charQueue.get(1).poll();
+
+
                final Battle battle = new Battle(number,player1,player2);
                player1.setInBattle(true);
                player2.setInBattle(true);
@@ -113,5 +124,13 @@ public class Arena extends Thread {
 
     public void setBattleList(HashMap<Long, Battle> battleList) {
         this.battleList = battleList;
+    }
+
+    public HashSet<String> getBattleOFF() {
+        return battleOFF;
+    }
+
+    public  void setBattleOFF(HashSet<String> battleOFF) {
+        this.battleOFF = battleOFF;
     }
 }

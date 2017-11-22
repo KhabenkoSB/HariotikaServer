@@ -15,6 +15,9 @@ import javax.ws.rs.HEAD;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
+
+        System.out.println(3%2);
+
        Arena arena = new Arena();
         Character character = new Character("Maka","Maka");
         Character character2 = new Character("Maka","Maka");
