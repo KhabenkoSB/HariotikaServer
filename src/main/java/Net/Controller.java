@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-@WebServlet("/")
-public class Controller extends HttpServlet {
+    @WebServlet("/")
+    public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
