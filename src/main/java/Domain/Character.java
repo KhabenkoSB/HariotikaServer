@@ -6,8 +6,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.query.Query;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 import javax.persistence.*;
 import javax.websocket.Session;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -20,6 +25,8 @@ public class Character implements Comparable, Serializable {
     private  Users user;
     @Transient
     private boolean inBattle;
+    @Transient
+    private BufferedImage avatar;
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -56,6 +63,12 @@ public class Character implements Comparable, Serializable {
     public Character(String name, String login) {
         this.name = name;
         this.login = login;
+        try {
+            this.avatar = ImageIO.read(new File("src\\main\\resources\\avatars\\"+name+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Character() {

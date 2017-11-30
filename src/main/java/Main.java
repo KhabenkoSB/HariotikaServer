@@ -10,12 +10,65 @@ import db.Login;
 import db.Users;
 import org.hibernate.Session;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
 import javax.ws.rs.HEAD;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.*;
 
 public class Main {
+
+
+
+    private static BufferedImage createImageFromBytes(byte[] imageData) {
+        ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
+        try {
+            return ImageIO.read(bais);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public static void main(String[] args) throws InterruptedException {
 
+        try {
 
+
+
+            // System.out.println(gson.toJson(serializeStream));
+
+            File f = new File("D:\\MyGame\\HariotikaServer\\src\\main\\resources\\avatars\\Maka.png"); // тестовая картинка 400*300 24 bit (400*300*3=360000)
+            BufferedImage img = ImageIO.read(f);
+
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "jpg", baos);
+            byte[] bytes = baos.toByteArray();
+            System.out.println(bytes.length);
+
+            /*
+            byte[] bytes = ((DataBufferByte) img.getData().getDataBuffer()).getData();
+            System.out.println("data lenght " + bytes.length);
+*/
+
+            InputStream in = new ByteArrayInputStream(bytes);
+            BufferedImage bImageFromConvert = ImageIO.read(in);
+
+            File outputfile = new File("image1.jpg");
+            ImageIO.write(bImageFromConvert, "jpg", outputfile);
+
+
+            System.out.println(img.getData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        /*
         System.out.println(3%2);
 
        Arena arena = new Arena();
@@ -51,7 +104,7 @@ public class Main {
         System.out.println(true&&true);
 
 
-   /*
+
 
 
         System.out.println("Maven + Hibernate + PgSQL");
