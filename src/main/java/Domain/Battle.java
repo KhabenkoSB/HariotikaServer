@@ -52,7 +52,9 @@ public class Battle {
         if (isFinish())
             finished =true;
 
+        if (player1.getName()!="Bot")
         player1.sendMessage("Battle#"+gson.toJson(battle));
+        if (player2.getName()!="Bot")
         player2.sendMessage("Battle#"+gson.toJson(battle));
 
         player1IsReady =false;
@@ -77,6 +79,7 @@ public class Battle {
         System.out.println("Бой начался");
         while (!isFinish())
         {
+            fightWithBot();
             try {
                 Thread.sleep(1000);
                 System.out.print("");
@@ -93,6 +96,8 @@ public class Battle {
          //   setPlayer1IsReady(true);
         //    setPlayer2IsReady(true);
 
+
+
         }
 
         player1.setInBattle(false);
@@ -101,6 +106,7 @@ public class Battle {
         System.out.println(player2.isInBattle());
         System.out.println("Бой закончен");
         finished =true;
+
 
 
     }
@@ -177,4 +183,19 @@ public class Battle {
         this.number = number;
     }
 
+    public void fightWithBot(){
+         if (player1.getName().equals("Bot")) {
+             player1IsReady = true;
+             player1Hit = PartOfBody.HEAD;
+             player1Def = PartOfBody.BODY;
+         } else if (player2.getName().equals("Bot")){
+             player2IsReady = true;
+             player2Hit = PartOfBody.HEAD;
+             player2Def =PartOfBody.BODY;
+
+         }
+
+
+
+    }
 }

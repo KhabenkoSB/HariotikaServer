@@ -139,6 +139,16 @@ public class ServerWS   {
            System.out.println("Зареган на батл");
            sendMessage("RegisteredInBattle#true");
 
+
+           Character character = new Character();
+           character.setName("Bot");
+           character.setHP(20);
+           character.setStrength(1);
+           character.setLvl(1);
+           characterMap.put(character.getName(), character);
+           arena.addToArena(character);
+
+
        }
 
     public void cancelRegBattle(String[] comand){

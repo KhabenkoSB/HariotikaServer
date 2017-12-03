@@ -28,6 +28,7 @@ public class Character implements Comparable, Serializable {
     @Transient
     private BufferedImage avatar;
 
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -60,9 +61,16 @@ public class Character implements Comparable, Serializable {
     @Column(name = "experience")
     private int experience;
 
+
+
+
+
+
+
     public Character(String name, String login) {
         this.name = name;
         this.login = login;
+
         try {
             this.avatar = ImageIO.read(new File("src\\main\\resources\\avatars\\"+name+".png"));
         } catch (IOException e) {
@@ -72,6 +80,7 @@ public class Character implements Comparable, Serializable {
     }
 
     public Character() {
+
     }
 
     public void hit(Character enemy){
@@ -89,6 +98,7 @@ public class Character implements Comparable, Serializable {
         }
         catch (Exception e)
         {
+
             if (getSessionMap().get(this.getName()).isOpen() ){
                 System.out.println("Ошибка");
             sendMessage(message);

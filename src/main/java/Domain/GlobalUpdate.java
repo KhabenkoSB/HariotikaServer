@@ -28,7 +28,8 @@ public class GlobalUpdate extends Thread {
              if (character.getHP()< character.getMaxHP() && !character.isInBattle())
              character.setHP(character.getHP() + 1);
              ServerWS.getCharacterMap().get(character.getName()).setHP(character.getHP());
-             if (ServerWS.getSessionMap().get(pair.getKey()).isOpen()) {
+             if (character.getName()!= "Bot")
+             if (ServerWS.getSessionMap().get(pair.getKey()).isOpen() ) {
                  // Проверяем, конекшен
                  ServerWS.getSessionMap().get(character.getName()).getAsyncRemote().sendText("login#1#" + gson.toJson(ServerWS.getCharacterMap().get(character.getName())));
 

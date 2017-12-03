@@ -88,8 +88,9 @@ public class Arena extends Thread {
                };
 
                thread.start();
-
+               if (player1.getName()!="Bot")
                player1.sendMessage("Battle#"+gson.toJson(battle));
+               if (player2.getName()!="Bot")
                player2.sendMessage("Battle#"+gson.toJson(battle));
            }
 

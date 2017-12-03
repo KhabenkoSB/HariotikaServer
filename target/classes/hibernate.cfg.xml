@@ -13,7 +13,7 @@
         <property name="hbmdl.auto">update</property>
         <mapping class="db.Users"/>
         <mapping class="Domain.Character"/>
-         <!-- <property name="connection.username"/> -->
+        <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
