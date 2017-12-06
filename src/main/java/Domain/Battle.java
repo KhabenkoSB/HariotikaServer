@@ -4,6 +4,7 @@ package Domain;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.util.*;
 
 public class Battle {
 
@@ -183,15 +184,28 @@ public class Battle {
         this.number = number;
     }
 
+
+
+
     public void fightWithBot(){
+
+        List<PartOfBody> VALUES = new ArrayList<PartOfBody>();
+        VALUES.add(PartOfBody.HEAD);
+        VALUES.add(PartOfBody.BODY);
+        VALUES.add(PartOfBody.LEGS);
+        int SIZE = VALUES.size();
+         Random RANDOM = new Random();
+
+
          if (player1.getName().equals("Bot")) {
              player1IsReady = true;
-             player1Hit = PartOfBody.HEAD;
-             player1Def = PartOfBody.BODY;
+             player1Hit = VALUES.get(RANDOM.nextInt(SIZE));
+             player1Def = VALUES.get(RANDOM.nextInt(SIZE));
          } else if (player2.getName().equals("Bot")){
              player2IsReady = true;
-             player2Hit = PartOfBody.HEAD;
-             player2Def =PartOfBody.BODY;
+             player2Hit = VALUES.get(RANDOM.nextInt(SIZE));
+             player2Def = VALUES.get(RANDOM.nextInt(SIZE));
+
 
          }
 

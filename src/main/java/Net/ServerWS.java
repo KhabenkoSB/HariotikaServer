@@ -91,7 +91,7 @@ public class ServerWS   {
 
                        if (!characterMap.containsKey(login.getCharacter().getName())) {
                            characterMap.put(login.getCharacter().getName(), login.getCharacter());
-                           System.out.println("обавили в мапучаров");
+                           System.out.println("Обновил в мапу чаров");
                            System.out.println(gson.toJson(characterMap.get(login.getCharacter().getName())));
 
                        }
@@ -99,6 +99,7 @@ public class ServerWS   {
                      //  sendMessage("login#1#" + gson.toJson(login.getCharacter())); //Код ошибки: 1 - отправка данных
                        System.out.println(characterMap.get(login.getCharacter()));
                        sendMessage("login#1#" + gson.toJson(characterMap.get(login.getCharacter().getName())));
+
 
                    }
                    else
@@ -110,6 +111,7 @@ public class ServerWS   {
                    if (!characterMap.containsKey(login.getCharacter().getName()))
                    characterMap.put(login.getCharacter().getName(),login.getCharacter());
                    sendMessage("login#"+login.getUser().getLogin()+"#"+gson.toJson(login.getCharacter()));
+                   sendMessage("login#1#"+gson.toJson(login.getCharacter()));
 
                }
        }
