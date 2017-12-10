@@ -148,7 +148,7 @@ public class ServerWS   {
            character.setStrength(1);
            character.setLvl(1);
            characterMap.put(character.getName(), character);
-           arena.addToArena(character);
+        //   arena.addToArena(character);
 
 
        }

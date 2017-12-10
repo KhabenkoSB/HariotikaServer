@@ -10,7 +10,7 @@ public class Battle {
 
     long number;
     boolean finished = false;
-    String log;
+    String log = "";
     private Character player1;
     private Character player2;
 
@@ -34,12 +34,13 @@ public class Battle {
 
 
     public void fight(){
+
         Gson gson = new Gson();
         System.out.println("Файт");
         if (!getPlayer1Hit().equals(getPlayer2Def()) && getPlayer1Hit()!= null)
         {
             player1.hit(player2);
-            log+=player1.getName()+" hitting "+player2.getName()+" to "+ player1Hit;
+            log=player1.getName()+" hitting "+player2.getName()+" to "+ player1Hit+" \n";
             System.out.println("HP Игрока 1 "+player1.getHP());
         }
         if (!getPlayer2Hit().equals(getPlayer1Def())&& getPlayer2Hit()!= null)

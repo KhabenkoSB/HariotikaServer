@@ -25,9 +25,10 @@ public class GlobalUpdate extends Thread {
 
          for (HashMap.Entry<String, Character> pair : ServerWS.getCharacterMap().entrySet()) {
              character = ServerWS.getCharacterMap().get(pair.getKey() );
-             if (character.getHP()< character.getMaxHP() && !character.isInBattle())
-             character.setHP(character.getHP() + 1);
-             ServerWS.getCharacterMap().get(character.getName()).setHP(character.getHP());
+             if (character.getHP()< character.getMaxHP() && !character.isInBattle() && character.getName()!= "Bot") {
+                 character.setHP(character.getHP() + 1);
+                 ServerWS.getCharacterMap().get(character.getName()).setHP(character.getHP());
+             }
              if (character.getName()!= "Bot")
              if (ServerWS.getSessionMap().get(pair.getKey()).isOpen() ) {
                  // Проверяем, конекшен

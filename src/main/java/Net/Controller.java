@@ -30,7 +30,9 @@ import java.net.URISyntaxException;
         String imageId = req.getParameter("id");
         //Тут вы получаете  Entity вашей картинки, одно из полей у которого является массивом байт
         ServletContext contex = getServletContext();
-        String path = contex.getRealPath("/resources/Maka.png");
+      //  System.out.println(contex.getResourcePaths("avatars/Maka.png"));
+     //   System.out.println(contex.getContextPath());
+        String path = contex.getRealPath("WEB-INF\\classes\\avatars\\Maka.png");
         System.out.println(path);
         File f = new File(path); // тестовая картинка 400*300 24 bit (400*300*3=360000)
 

@@ -72,6 +72,7 @@ public class Character implements Comparable, Serializable {
         this.login = login;
 
         try {
+            System.out.println("Вычитываем аватарку "+name);
             this.avatar = ImageIO.read(new File("src\\main\\resources\\avatars\\"+name+".png"));
         } catch (IOException e) {
             e.printStackTrace();
