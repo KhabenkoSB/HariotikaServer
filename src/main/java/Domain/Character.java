@@ -73,7 +73,7 @@ public class Character implements Comparable, Serializable {
 
         try {
             System.out.println("Вычитываем аватарку "+name);
-            this.avatar = ImageIO.read(new File("src\\main\\resources\\avatars\\"+name+".png"));
+            this.avatar = ImageIO.read(new File("D:\\MyGame\\HariotikaServer\\src\\main\\resources\\avatars\\"+name+".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class Character implements Comparable, Serializable {
 
     public Character() {
 
-    }
+           }
 
     public void hit(Character enemy){
         System.out.println("Удар "+getName());
@@ -93,7 +93,6 @@ public class Character implements Comparable, Serializable {
     }
 
     public void sendMessage(String message) {
-
         try {
             getSessionMap().get(this.getName()).getAsyncRemote().sendText(message);
         }

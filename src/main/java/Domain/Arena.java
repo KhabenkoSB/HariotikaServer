@@ -12,8 +12,8 @@ import static Net.ServerWS.getCharacterMap;
 
 
 public class Arena extends Thread {
-    HashMap<Integer,PriorityQueue<Domain.Character>> charQueue;
-    HashMap<Long,Battle> battleList;
+    static HashMap<Integer,PriorityQueue<Domain.Character>> charQueue;
+    static HashMap<Long,Battle> battleList;
     HashSet<String> battleOFF;
 
     Gson gson ;
@@ -37,9 +37,22 @@ public class Arena extends Thread {
 
         for (HashMap.Entry<Integer, PriorityQueue<Character>>  pair: charQueue.entrySet()) {
             if(pair.getKey() == character.getLvl()){
-                pair.getValue().offer(getCharacterMap().get(character.getName()));
+                if (!(pair.getValue().contains(character))&& !character.isInBattle()) {
+                    System.out.println("Проверка, естьли в очереди чар "+character.getName()+" "+pair.getValue().contains(character));
+                    pair.getValue().offer(getCharacterMap().get(character.getName()));
+                }
+                else {
+                    for (HashMap.Entry<Long, Battle> battleEntry : battleList.entrySet()) {
+                        if (battleEntry.getValue().getPlayer1().getName().equals(character.getName()) && battleEntry.getValue().getPlayer2().getName().equals(character.getName())) {
+                            System.out.println("++++++++++++++++");
+                            character.sendMessage("Battle#" + gson.toJson(battleEntry.getValue()));
+                            break;
+                        }
+
+                     }
+
+                }
             }
-          //  System.out.println(pair);
         }
 
     }

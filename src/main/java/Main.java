@@ -16,6 +16,7 @@ import javax.ws.rs.HEAD;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.*;
+import java.util.Date;
 
 public class Main {
 
@@ -32,7 +33,34 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
+        Date curentDate = new Date();
+        int timer =30;
+        long createDae = curentDate.getTime()/1000;
+        long endDate = createDae+30;
 
+        while (timer >0) {
+            curentDate = new Date();
+            Thread.sleep(1000);
+            System.out.println(endDate-curentDate.getTime()/1000);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*
         try {
 
 
@@ -51,7 +79,7 @@ public class Main {
             /*
             byte[] bytes = ((DataBufferByte) img.getData().getDataBuffer()).getData();
             System.out.println("data lenght " + bytes.length);
-*/
+
 
             InputStream in = new ByteArrayInputStream(bytes);
             BufferedImage bImageFromConvert = ImageIO.read(in);

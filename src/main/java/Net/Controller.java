@@ -35,8 +35,6 @@ import java.net.URISyntaxException;
         String path = contex.getRealPath("WEB-INF\\classes\\avatars\\Maka.png");
         System.out.println(path);
         File f = new File(path); // тестовая картинка 400*300 24 bit (400*300*3=360000)
-
-   //     File f = new File("D:\\MyGame\\HariotikaServer\\src\\main\\resources\\avatars\\Maka.png"); // тестовая картинка 400*300 24 bit (400*300*3=360000)
         BufferedImage img = ImageIO.read(f);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(img, "png", baos);
