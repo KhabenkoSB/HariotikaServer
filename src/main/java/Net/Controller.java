@@ -18,7 +18,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 
 
-@WebServlet("")
+@WebServlet("/getAvatar/")
     public class Controller extends HttpServlet {
 
     @Override
@@ -27,13 +27,12 @@ import java.net.URISyntaxException;
 
         resp.setContentType("image/jpeg");
         //парсим id картинки из запроса
-        String imageId = req.getParameter("id");
+        String imageId = req.getParameter("name");
         //Тут вы получаете  Entity вашей картинки, одно из полей у которого является массивом байт
         ServletContext contex = getServletContext();
-      //  System.out.println(contex.getResourcePaths("avatars/Maka.png"));
-     //   System.out.println(contex.getContextPath());
-        String path = contex.getRealPath("WEB-INF\\classes\\avatars\\Maka.png");
-        System.out.println(path);
+       // String path = contex.getRealPath("WEB-INF\\classes\\avatars\\"+imageId+".png");
+
+        String path = "C:\\Avatars\\"+imageId+".png";
         File f = new File(path); // тестовая картинка 400*300 24 bit (400*300*3=360000)
         BufferedImage img = ImageIO.read(f);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

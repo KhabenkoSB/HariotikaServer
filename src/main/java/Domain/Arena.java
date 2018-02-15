@@ -1,6 +1,9 @@
 package Domain;
 
+import Net.Command;
+import Net.HariotikaMessage;
 import Net.ServerWS;
+import Net.WsCode;
 import com.google.gson.Gson;
 import Domain.Character;
 import com.google.gson.reflect.TypeToken;
@@ -15,8 +18,8 @@ public class Arena extends Thread {
     static HashMap<Integer,PriorityQueue<Domain.Character>> charQueue;
     static HashMap<Long,Battle> battleList;
     HashSet<String> battleOFF;
-
-    Gson gson ;
+    private HariotikaMessage hariotikaMessage;
+    private Gson gson ;
 
 
     public Arena() {
@@ -29,23 +32,24 @@ public class Arena extends Thread {
             this.charQueue.put(i, new PriorityQueue<Character>());
         }
         this.start();
-        System.out.println("------------Арена создана------------");
+        System.out.println("------------Arena created------------");
     }
-
 
     public void addToArena(Character character) {
 
         for (HashMap.Entry<Integer, PriorityQueue<Character>>  pair: charQueue.entrySet()) {
             if(pair.getKey() == character.getLvl()){
-                if (!(pair.getValue().contains(character))&& !character.isInBattle()) {
-                    System.out.println("Проверка, естьли в очереди чар "+character.getName()+" "+pair.getValue().contains(character));
+                if (!(pair.getValue().contains(character)) && !getCharacterMap().get(character.getName()).isInBattle()) {
+                  //  System.out.println("Проверка, естьли в очереди чар "+character.getName()+" "+pair.getValue().contains(character));
+                 //   System.out.println("Проверка, персонаж уже в бою "+getCharacterMap().get(character.getName()).isInBattle());
                     pair.getValue().offer(getCharacterMap().get(character.getName()));
                 }
                 else {
                     for (HashMap.Entry<Long, Battle> battleEntry : battleList.entrySet()) {
-                        if (battleEntry.getValue().getPlayer1().getName().equals(character.getName()) && battleEntry.getValue().getPlayer2().getName().equals(character.getName())) {
-                            System.out.println("++++++++++++++++");
-                            character.sendMessage("Battle#" + gson.toJson(battleEntry.getValue()));
+                        if (battleEntry.getValue().getPlayer1().getName().equals(character.getName()) || battleEntry.getValue().getPlayer2().getName().equals(character.getName())) {
+                            System.out.println("++++++++Возвращяем сущетвующий батл игроку++++++++");
+                            hariotikaMessage = new HariotikaMessage(Command.Battle, WsCode.UpdateBattle, battleEntry.getValue());
+                            character.sendMessage(gson.toJson(hariotikaMessage));
                             break;
                         }
 
@@ -65,7 +69,7 @@ public class Arena extends Thread {
 
     @Override
     public void run() {
-        System.out.println("------------Запущенно создание батлов------------");
+        System.out.println("------------Started Arena------------");
              while (true){
                  createBattle();
              }
@@ -79,12 +83,15 @@ public class Arena extends Thread {
 
            if (pair.getValue().size()>1 && pair.getValue().size()%2==0 ){
 
-               System.out.println("----------Создан БАТЛ-------------");
+               System.out.println("----------Greated Battle-------------LVL = "+pair.getKey());
+
+
                long number = new Date().getTime();
 
-               Character player1 = charQueue.get(1).poll();
-               Character player2 = charQueue.get(1).poll();
-
+               Character player1 = charQueue.get(pair.getKey()).poll();
+               System.out.println("Add to battle "+player1.getName());
+               Character player2 = charQueue.get(pair.getKey()).poll();
+               System.out.println("Add to battle "+player2.getName());
 
                final Battle battle = new Battle(number,player1,player2);
                player1.setInBattle(true);
@@ -99,12 +106,14 @@ public class Arena extends Thread {
 
                    }
                };
-
                thread.start();
+               hariotikaMessage = new HariotikaMessage(Command.Battle, WsCode.UpdateBattle, battle);
+              // System.out.println(hariotikaMessage);
+
                if (player1.getName()!="Bot")
-               player1.sendMessage("Battle#"+gson.toJson(battle));
+               player1.sendMessage(gson.toJson(hariotikaMessage));
                if (player2.getName()!="Bot")
-               player2.sendMessage("Battle#"+gson.toJson(battle));
+               player2.sendMessage(gson.toJson(hariotikaMessage));
            }
 
             }

@@ -6,6 +6,10 @@ import Net.ServerWS;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -71,13 +75,12 @@ public class Login  {
                 query = session.createQuery(hql);
                 List<Character> characters =  query.list();
                 character=characters.get(0);
+                character.updatePlayerCharacteristics();
                 return true;
             }
             else
                 return false;
-
         }
-
         return false;
     }
 
@@ -95,18 +98,30 @@ public class Login  {
         user.setPass("null");
         save(user);
         createNewChar();
-
-
     }
 
     public  void createNewChar(){
         character = new Character(user.getLogin(),user.getLogin());
         character.setLvl(1);
-        character.setHP(10);
-        character.setMaxHP(20);
-        character.setStrength(5);
-        character.setArmor(1);
+        character.setHP(60);
+        character.setMaxHP(60);
+        character.setStrength(3);
+        character.setAgility(3);
+        character.setIntuition(3);
+        character.setIntelligence(4);
+        character.setVitality(6);
         save(character);
+        character.updatePlayerCharacteristics();
+
+
+
+        File avatar = new File("C:\\Avatars\\Default.png");
+        File newFile = new File("C:\\Avatars\\"+character.getName()+".png");
+        try {
+            copy(avatar,newFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -118,5 +133,23 @@ public class Login  {
         this.character = character;
     }
 
+    public static void copy(File source, File dest) throws IOException {
+        System.out.println("++++++++++++++++++++++++++++++++++"+source.getAbsolutePath());
+        FileInputStream is = new FileInputStream(source);
+        try {
+            FileOutputStream os = new FileOutputStream(dest);
+            try {
+                byte[] buffer = new byte[4096];
+                int length;
+                while ((length = is.read(buffer)) > 0) {
+                    os.write(buffer, 0, length);
+                }
+            } finally {
+                os.close();
+            }
+        } finally {
+            is.close();
+        }
+    }
 
 }
